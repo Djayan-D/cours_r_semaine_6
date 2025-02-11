@@ -1,0 +1,55 @@
+---
+title: "Analyse des élus"
+author: "Votre Nom"
+params:
+  code_commune: "44109"   # Code de la commune (par exemple, Nantes)
+  code_departement: "44"  # Code du département (par exemple, Loire-Atlantique)
+output: html_document
+---
+
+# Packages utiles
+
+```{r}
+library(dplyr)
+```
+
+# Importer et lancer la library
+
+```{r}
+remotes::install_github("Djayan-D/firstlibdjayan")
+library(firstlibdjayan)
+```
+
+
+```{r}
+data <- elus_sample
+```
+
+## Modifier le type de données
+
+```{r}
+data$Date.de.naissance <- as.Date(data$Date.de.naissance)
+```
+
+
+```{r}
+df_commune <- data |> 
+  filter(Code.de.la.commune == params$code_commune)
+
+df_departement <- data |> 
+  filter(Code.du.département == params$code_departement)
+```
+
+```{r}
+df_commune <- creer_commune(df_commune)
+
+df_departement <- creer_departement(df_departement)
+```
+
+```{r}
+summary(df_commune)
+plot(df_commune)
+
+summary(df_departement)
+plot(df_departement)
+```
